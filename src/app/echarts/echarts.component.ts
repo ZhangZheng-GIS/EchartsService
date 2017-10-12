@@ -24,8 +24,8 @@ export class EchartsComponent implements OnInit {
 
         //  1 解析原始数据
 
-        let resolved_data = this._echartsService.resolve(data);
-        console.log(resolved_data);
+        let resolved_data = this._echartsService.resolveDataSet(data);
+        // console.log(resolved_data);
 
         //  2 init option
         let option = this._echartsService.initOption();

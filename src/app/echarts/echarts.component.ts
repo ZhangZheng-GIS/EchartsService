@@ -7,126 +7,40 @@ import { DataService } from './data.service';
   styleUrls: ['./echarts.component.css']
 })
 export class EchartsComponent implements OnInit {
-  _option: Object;
-  // _data: Object;
+  option: any;
 
   constructor(
-    private _dataService: DataService,
-    private _echartsService: EchartsService
-  ) { }
-  getData() {
-    return this._dataService.getData().subscribe({
+    private dataService: DataService,
+    private echartsService: EchartsService
+  ) {
+    this.dataService.getData().subscribe({
       next: (data) => {
-        // this._data = data;
-
-        // console.log(data);
-
 
         //  1 解析原始数据
+        let chartData = this.echartsService.resolveDataSet(data);
 
-        let resolved_data = this._echartsService.resolveDataSet(data);
-        // console.log(resolved_data);
+        let tts = this.echartsService.getMetaInfo(data);
 
         //  2 init option
-        let option = this._echartsService.initOption();
+        let option = this.echartsService.initOption();
 
         // 3 set option
-        let titleOptions = {
-          left: 'center'
-        };
-        this._echartsService.setTitle(option, titleOptions, '各街道企业占地面积及数量', '2017年');
-        this._echartsService.setSeries(resolved_data, option,
+        this.echartsService.setSeries(chartData, tts, option,
           [{ did: '占地面积', type: 'bar' },
           { did: '企业数量', type: 'line' }]);
-        this._echartsService.setXAxisData(resolved_data, option, '板块名称');
-        this._echartsService.setYAxis(resolved_data, option);
-        this._echartsService.setyAxisIndex(option, ['企业数量']);
-        let legendOptions = {
-          // left: 'center',
-          // top: '60',
-          right: '200',
-          // bottom: '20',
-          // width: '200px',
-          // height: '100px'
-        };
-        this._echartsService.setLegend(option, legendOptions);
-        this._echartsService.setColor(option, ['#00ff4c', '#0011ff']);
-        this._option = option;
-        console.log(option);
+        this.echartsService.setXAxisData(chartData, tts, option, '板块名称');
+        this.echartsService.setYAxis(chartData, tts, option);
+        this.echartsService.setyAxisIndex(option, ['企业数量']);
+        this.echartsService.setTitle(option, { text: 'aaaaaaa', left: 'center' });
+        this.echartsService.setLegend(option, { left: 'center', top: 20 });
+        this.echartsService.setColor(option, ['#00ff4c', '#0011ff']);
 
-
-
-
-
-
-
-        // let xAxisData: Array<any> = [];
-        // let seriesData1: Array<any> = [];
-        // let seriesData2: Array<any> = [];
-
-        // let xAxisColumn = '板块名称';
-        // let yAxisColumn1 = '占地面积';
-        // let yAxisColumn2 = '企业数量';
-
-        // _.forEach(data.Data.tdc, (item) => {
-
-        //   let name = _.find(item, function (o) { return o.did === xAxisColumn; });
-        //   xAxisData.push(name.dv);
-        //   let area = _.find(item, function (o) { return o.did === yAxisColumn1; });
-        //   seriesData1.push(area.dv);
-        //   let number = _.find(item, function (o) { return o.did === yAxisColumn2; });
-        //   seriesData2.push(number.dv);
-
-        // })
-        // this._option = {
-        //   title: {
-        //     text: 'ECharts 入门示例'
-        //   },
-        //   tooltip: {},
-        //   legend: {
-        //     data: [xAxisColumn]
-        //   },
-        //   xAxis: {
-        //     // type: 'category',
-        //     data: xAxisData,
-        //     axisTick: {
-        //       alignWithLabel: true,
-        //       interval: 0,
-        //     },
-        //     axisLabel: {
-        //       interval: 0,
-        //       rotate: 60,
-        //     }
-        //     // data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        //   },
-        //   yAxis: [{
-        //     type: 'value',
-        //     name: yAxisColumn1,
-        //   },
-        //   {
-        //     type: 'value',
-        //     name: yAxisColumn2,
-        //   }],
-        //   series: [{
-        //     name: yAxisColumn1,
-        //     type: 'bar',
-        //     data: seriesData1
-        //     // data: [5, 20, 36, 10, 10, 20]
-        //   },
-        //   {
-        //     name: yAxisColumn2,
-        //     type: 'bar',
-        //     yAxisIndex: 1,
-        //     data: seriesData2
-        //   }]
-        // };
+        this.option = option;
 
       }
     });
   }
 
-  ngOnInit() {
-    this.getData();
-  }
+  ngOnInit() {}
 
 }

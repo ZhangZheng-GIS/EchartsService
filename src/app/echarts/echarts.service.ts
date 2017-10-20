@@ -16,8 +16,8 @@ export class EchartsService {
     let item = _.find(this.tts, (o) => o.did === did);
     return item.tcd;
   }
-  getUnits(did) {
-    let item = _.find(this.tts, (o) => o.did === did);
+  getUnits(tcd) {
+    let item = _.find(this.tts, (o) => o.tcd === tcd);
     return item.du;
   }
 
@@ -41,23 +41,10 @@ export class EchartsService {
 
   initOption() {
     let option = {
-      title: {
-        text: '',
-        subtext: '',
-        left: 'center'
-      },
+      title: {},
       tooltip: {},
-      legend: {
-        data: [],
-        left: '',
-        top: '',
-        right: '',
-        bottom: '',
-        width: '',
-        height: ''
-      },
+      legend: {},
       xAxis: {
-        data: []
       },
       yAxis: [],
       series: [],
@@ -65,23 +52,15 @@ export class EchartsService {
     };
     return option;
   }
-  setLegend(option, yAxisArray, position, size) {
-    _.forEach(yAxisArray, (yAxis) => {
-      let tcd = this.getTcdByDid(yAxis);
-      option.legend.data.push(tcd);
+  setLegend(option, legendOptions) {
+    option.legend = legendOptions;
+    option.legend.data = [];
+    _.forEach(option.series, (serie) => {
+      option.legend.data.push(serie.name);
     });
-    if (position !== []) {
-      option.legend.left = position[0];
-      option.legend.top = position[1];
-      option.legend.right = position[2];
-      option.legend.bottom = position[3];
-    }
-    if (size !== []) {
-      option.legend.width = position[0];
-      option.legend.height = position[1];
-    }
     return option;
   }
+
   setXAxisData(data, option, xid) {
 
     option.xAxis.data = data[xid];
@@ -90,27 +69,19 @@ export class EchartsService {
   }
 
 
-  // setXAxisLabel() {
-
-  // }
-  setYAxis(data, option, yAxisArray) {
-    _.forEach(yAxisArray, (yAxis) => {
+  setYAxis(data, option) {
+    _.forEach(option.series, (serie) => {
       let item = {
         type: 'value',
         name: null
       };
-      if (_.has(data, yAxis)) {
-        let tcd = this.getTcdByDid(yAxis);
-
-        item.name = tcd;
-
-        let uni = this.getUnits(yAxis);
-        if (uni !== '') {
-          item.name += '(' + uni + ')';
-        }
-
-        option.yAxis.push(item);
+      item.name = serie.name;
+      let uni = this.getUnits(serie.name);
+      if (uni !== '') {
+        item.name += '(' + uni + ')';
       }
+
+      option.yAxis.push(item);
     });
     // console.log(option.yAxis);
     return option;
@@ -127,16 +98,10 @@ export class EchartsService {
         item.data = data[serie.did];
         item.type = serie.type;
 
-        //TODO: legend 单独放到一个方法中，包括position等(DONE)
-
         option.series.push(item);
       }
     });
     return option;
-
-
-
-
   }
 
   setyAxisIndex(option, yAxisArray) {
@@ -152,15 +117,16 @@ export class EchartsService {
     return option;
   }
 
-  //TODO: http://echarts.baidu.com/option.html#title(DONE)
-  setTitle(option, text, subtext) {
+
+  setTitle(option, titleOptions, text, subtext) {
+    option.title = titleOptions;
     option.title.text = text;
     option.title.subtext = subtext;
   }
 
-  //TODO: http://echarts.baidu.com/option.html#color(DONE)
+
   setColor(option, color) {
-    option.color =_.concat(color, option.color);
+    option.color = _.concat(color, option.color);
   }
 
 

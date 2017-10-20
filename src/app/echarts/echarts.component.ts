@@ -34,12 +34,16 @@ export class EchartsComponent implements OnInit {
         // this._echartsService.setLegend(option, '板块名称-');
         this._echartsService.setXAxisData(resolved_data, option, '板块名称');
         this._echartsService.setYAxis(resolved_data, option, ['占地面积', '企业数量']);
+        this._echartsService.setLegend(option, ['占地面积', '企业数量'], [], []);
         this._echartsService.setSeries(resolved_data, option,
           [{ did: '占地面积', type: 'bar' },
           { did: '企业数量', type: 'line' }]);
         this._echartsService.setyAxisIndex(option, ['企业数量']);
+        this._echartsService.setTitle(option, '各街道企业占地面积及数量');
+        this._echartsService.setColor(option, ['#00ff4c', '#0011ff']);
         this._option = option;
         console.log(option);
+        
 
 
 

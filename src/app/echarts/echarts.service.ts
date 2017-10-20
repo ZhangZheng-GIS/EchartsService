@@ -42,24 +42,45 @@ export class EchartsService {
   initOption() {
     let option = {
       title: {
-        text: ''
+        text: '',
+        left: 'center'
       },
       tooltip: {},
       legend: {
-        data: []
+        data: [],
+        left: '',
+        top: '',
+        right: '',
+        bottom: '',
+        width: '',
+        height: ''
       },
       xAxis: {
         data: []
       },
       yAxis: [],
-      series: []
+      series: [],
+      color: ['#c23531', '#2f4554', '#61a0a8', '#d48265', '#91c7ae', '#749f83', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3']
     };
     return option;
   }
-  // setLegend(option, xid) {
-  //   option.legend.data.push(xid);
-  //   return option;
-  // }
+  setLegend(option, yAxisArray, position, size) {
+    _.forEach(yAxisArray, (yAxis) => {
+      let tcd = this.getTcdByDid(yAxis);
+      option.legend.data.push(tcd);
+    });
+    if (position !== []) {
+      option.legend.left = position[0];
+      option.legend.top = position[1];
+      option.legend.right = position[2];
+      option.legend.bottom = position[3];
+    }
+    if (size !== []) {
+      option.legend.width = position[0];
+      option.legend.height = position[1];
+    }
+    return option;
+  }
   setXAxisData(data, option, xid) {
 
     option.xAxis.data = data[xid];
@@ -92,32 +113,11 @@ export class EchartsService {
     });
     // console.log(option.yAxis);
     return option;
-
-
-
-    // _.forIn(data, (value, key) => {
-    //   let item = {
-    //     type: 'value',
-    //     name: null
-    //   };
-    //   // console.log(key);
-    //   console.log(_.has(yid, key));
-    //   if (_.has(yid, key)) {
-    //     item.name = key;
-    //     option.yAxis.push(item);
-    //   }
-    // });
-
   }
 
   setSeries(data, option, series) {
     _.forEach(series, (serie) => {
-      // let item = {
-      //   name: null,
-      //   type: 'bar',
-      //   data: null,
-      //   yAxisIndex: 0,
-      // };
+
       if (_.has(data, serie.did)) {
         let item: any = new Object();
 
@@ -126,30 +126,15 @@ export class EchartsService {
         item.data = data[serie.did];
         item.type = serie.type;
 
-        //TODO: legend 单独放到一个方法中，包括position等
-        option.legend.data.push(tcd);
+        //TODO: legend 单独放到一个方法中，包括position等(DONE)
 
         option.series.push(item);
       }
     });
-    // console.log(option);
     return option;
 
 
-    // _.forIn(data, (value, key) => {
-    //   let item = {
-    //     name: null,
-    //     type: 'bar',
-    //     data: null,
-    //     yAxisIndex: 0
-    //   };
-    //   if (_.has(yid, key)) {
-    //     item.name = key;
-    //     item.data = value;
-    //     option.legend.data.push(key); // 设置legend
-    //     option.series.push(item);
-    //   }
-    // });
+
 
   }
 
@@ -164,25 +149,16 @@ export class EchartsService {
     });
 
     return option;
-
-    // let right = _.find(option.series, (item) => {
-    //   let tcd = this.getTcdByDid(yid);
-    //   return item.name === tcd;
-    // });
-    // console.log(right);
-
-    // right.yAxisIndex = 1;
-    // return option;
   }
 
-  //TODO: http://echarts.baidu.com/option.html#title
-  setTitle(){
-
+  //TODO: http://echarts.baidu.com/option.html#title(DONE)
+  setTitle(option, text) {
+    option.title.text = text;
   }
 
-  //TODO: http://echarts.baidu.com/option.html#color
-  setColor(){
-
+  //TODO: http://echarts.baidu.com/option.html#color(DONE)
+  setColor(option, color) {
+    option.color =_.concat(color, option.color);
   }
 
 

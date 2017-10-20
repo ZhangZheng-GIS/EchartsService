@@ -43,6 +43,7 @@ export class EchartsService {
     let option = {
       title: {
         text: '',
+        subtext: '',
         left: 'center'
       },
       tooltip: {},
@@ -152,8 +153,9 @@ export class EchartsService {
   }
 
   //TODO: http://echarts.baidu.com/option.html#title(DONE)
-  setTitle(option, text) {
+  setTitle(option, text, subtext) {
     option.title.text = text;
+    option.title.subtext = subtext;
   }
 
   //TODO: http://echarts.baidu.com/option.html#color(DONE)

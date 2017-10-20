@@ -39,7 +39,7 @@ export class EchartsComponent implements OnInit {
           [{ did: '占地面积', type: 'bar' },
           { did: '企业数量', type: 'line' }]);
         this._echartsService.setyAxisIndex(option, ['企业数量']);
-        this._echartsService.setTitle(option, '各街道企业占地面积及数量');
+        this._echartsService.setTitle(option, '各街道企业占地面积及数量', '2017年');
         this._echartsService.setColor(option, ['#00ff4c', '#0011ff']);
         this._option = option;
         console.log(option);

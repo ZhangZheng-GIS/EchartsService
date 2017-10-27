@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 
-
-
 @Injectable()
-export class EchartsService {
+export class HchartsService {
 
   constructor() { }
 
@@ -15,7 +13,9 @@ export class EchartsService {
     let item = _.find(tts, (o) => o.tcd === tcd);
     return item.du;
   }
-
+  toNumber(n) {
+    return _.toNumber(n);
+  }
   resolveDataSet(data) {
     let dataSet = new Object();
 
@@ -42,9 +42,7 @@ export class EchartsService {
       legend: {
         data: []
       },
-      xAxis: {
-        // data: []
-      },
+      xAxis: {},
       yAxis: [],
       series: []
     };
@@ -55,19 +53,22 @@ export class EchartsService {
   }
 
   setXAxisData(data, tts, option, xid) {
-    option.xAxis.data = data[xid];
+    option.xAxis.categories = data[xid];
   }
 
   setYAxis(data, tts, option) {
     _.forEach(option.series, (serie) => {
       let item = {
-        type: 'value',
-        name: null
+        id: '',
+        title: {
+          text: ''
+        },
       };
-      item.name = serie.name;
+      item.id = serie.id;
+      item.title.text = serie.name;
       let uni = this.getUnits(tts, serie.name);
       if (uni !== '') {
-        item.name += '(' + uni + ')';
+        item.title.text += '(' + uni + ')';
       }
       option.yAxis.push(item);
     });
@@ -78,36 +79,46 @@ export class EchartsService {
     _.forEach(series, (serie) => {
       if (_.has(data, serie.did)) {
         let item: any = new Object();
-
+        let numdata = _.map(data[serie.did], this.toNumber);
         item.id = serie.did;
         item.name = this.getTcdByDid(tts, serie.did);
-        item.data = data[serie.did];
+        item.data = numdata;
         item.type = serie.type;
-
         option.series.push(item);
       }
     });
   }
 
   setyAxisIndex(option, yAxisArray) {
+    let No = 1;
     _.forEach(yAxisArray, (yAxis) => {
-      let right = _.find(option.series, (item) => {
+      let rightSerie = _.find(option.series, (item) => {
         return item.id === yAxis;
       });
-      right.yAxisIndex = 1;
+      let rightYaxis = _.find(option.yAxis, (item) => {
+        return item.id === yAxis;
+      });
+      rightSerie.yAxis = No;
+      No++;
+      rightYaxis.opposite = true;
     });
-  }
-
-  setColor(option, colors: Array<string>) {
-    option.color = colors;
   }
 
   setLegend(option, legendOptions) {
     option.legend = legendOptions;
-
-    option.legend.data = [];
-    _.forEach(option.series, (serie) => {
-      option.legend.data.push(serie.name);
-    });
   }
+
+  setColor(option, colors: Array<string>) {
+
+    option.colors = colors;
+  }
+
+
+
+
+
+
+
+
 }
+

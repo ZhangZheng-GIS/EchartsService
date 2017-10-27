@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EchartsService } from './echarts.service';
-import { DataService } from './data.service';
+import { DataService } from '../data.service';
 @Component({
   selector: 'app-echarts',
   templateUrl: './echarts.component.html',

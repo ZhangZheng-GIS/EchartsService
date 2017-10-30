@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
+import { ChartService } from '../chart.service.interface';
 
 @Injectable()
-export class HchartsService {
+export class HchartsService implements ChartService {
 
   constructor() { }
 
-  getTcdByDid(tts, did) {
+  getTcdByDid(tts: object, did: any): any {
     let item = _.find(tts, (o) => o.did === did);
     return item.tcd;
   }
-  getUnits(tts, tcd) {
+  getUnits(tts: object, tcd: any): any {
     let item = _.find(tts, (o) => o.tcd === tcd);
     return item.du;
   }
-  toNumber(n) {
+  toNumber(n: any): any {
     return _.toNumber(n);
   }
-  resolveDataSet(data) {
+  resolveDataSet(data: any): any {
     let dataSet = new Object();
 
     _.forEach(data.Data.tdc, (tdc: any) => {
@@ -30,11 +31,11 @@ export class HchartsService {
     return dataSet;
   }
 
-  getMetaInfo(data) {
+  getMetaInfo(data: any): any {
     return data.Data.tts;
   }
 
-  initOption() {
+  initOption(): any {
     return {
       title: {
       },
@@ -48,25 +49,24 @@ export class HchartsService {
     };
   }
 
-  setTitle(option, titleOptions) {
+  setTitle(option: any, titleOptions: object): any {
     option.title = titleOptions;
   }
 
-  setXAxisData(data, tts, option, xid) {
+  setXAxisData(data: object, tts: object, option: any, xid: string): any {
     option.xAxis.categories = data[xid];
   }
 
-  setYAxis(data, tts, option) {
+  setYAxis(data: object, tts: object, option: any): any {
     _.forEach(option.series, (serie) => {
-      let item = {
-        id: '',
+      let item: any = {
         title: {
           text: ''
         },
       };
       item.id = serie.id;
       item.title.text = serie.name;
-      let uni = this.getUnits(tts, serie.name);
+      let uni: any = this.getUnits(tts, serie.name);
       if (uni !== '') {
         item.title.text += '(' + uni + ')';
       }
@@ -75,10 +75,11 @@ export class HchartsService {
     return option;
   }
 
-  setSeries(data, tts, option, series) {
-    _.forEach(series, (serie) => {
+  setSeries(data: object, tts: object, option: any, series: Array<object>): any {
+    _.forEach(series, (serie: any) => {
       if (_.has(data, serie.did)) {
         let item: any = new Object();
+        // TODO：highcharts中data数组需为number型
         let numdata = _.map(data[serie.did], this.toNumber);
         item.id = serie.did;
         item.name = this.getTcdByDid(tts, serie.did);
@@ -89,13 +90,13 @@ export class HchartsService {
     });
   }
 
-  setyAxisIndex(option, yAxisArray) {
+  setyAxisIndex(option: any, yAxisArray: object): any {
     let No = 1;
-    _.forEach(yAxisArray, (yAxis) => {
-      let rightSerie = _.find(option.series, (item) => {
+    _.forEach(yAxisArray, (yAxis: any) => {
+      let rightSerie = _.find(option.series, (item: any) => {
         return item.id === yAxis;
       });
-      let rightYaxis = _.find(option.yAxis, (item) => {
+      let rightYaxis = _.find(option.yAxis, (item: any) => {
         return item.id === yAxis;
       });
       rightSerie.yAxis = No;
@@ -104,11 +105,11 @@ export class HchartsService {
     });
   }
 
-  setLegend(option, legendOptions) {
+  setLegend(option: any, legendOptions: object): any {
     option.legend = legendOptions;
   }
 
-  setColor(option, colors: Array<string>) {
+  setColor(option: any, colors: Array<string>): any {
 
     option.colors = colors;
   }

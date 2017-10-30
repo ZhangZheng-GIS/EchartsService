@@ -1,22 +1,23 @@
 import { Injectable } from '@angular/core';
 
+import { ChartService } from '../chart.service.interface';
 
 
 @Injectable()
-export class EchartsService {
+export class EchartsService implements ChartService {
 
   constructor() { }
 
-  getTcdByDid(tts, did) {
+  getTcdByDid(tts: object, did: any): any {
     let item = _.find(tts, (o) => o.did === did);
     return item.tcd;
   }
-  getUnits(tts, tcd) {
+  getUnits(tts: object, tcd: any): any {
     let item = _.find(tts, (o) => o.tcd === tcd);
     return item.du;
   }
 
-  resolveDataSet(data) {
+  resolveDataSet(data: any): any {
     let dataSet = new Object();
 
     _.forEach(data.Data.tdc, (tdc: any) => {
@@ -30,11 +31,11 @@ export class EchartsService {
     return dataSet;
   }
 
-  getMetaInfo(data) {
+  getMetaInfo(data: any): any {
     return data.Data.tts;
   }
 
-  initOption() {
+  initOption(): any {
     return {
       title: {
       },
@@ -50,15 +51,15 @@ export class EchartsService {
     };
   }
 
-  setTitle(option, titleOptions) {
+  setTitle(option: any, titleOptions: object): any {
     option.title = titleOptions;
   }
 
-  setXAxisData(data, tts, option, xid) {
+  setXAxisData(data: object, tts: object, option: any, xid: string): any {
     option.xAxis.data = data[xid];
   }
 
-  setYAxis(data, tts, option) {
+  setYAxis(data: object, tts: object, option: any): any {
     _.forEach(option.series, (serie) => {
       let item = {
         type: 'value',
@@ -74,7 +75,7 @@ export class EchartsService {
     return option;
   }
 
-  setSeries(data, tts, option, series) {
+  setSeries(data: object, tts: object, option: any, series: Array<object>): any {
     _.forEach(series, (serie) => {
       if (_.has(data, serie.did)) {
         let item: any = new Object();
@@ -89,7 +90,7 @@ export class EchartsService {
     });
   }
 
-  setyAxisIndex(option, yAxisArray) {
+  setyAxisIndex(option: any, yAxisArray: object): any {
     _.forEach(yAxisArray, (yAxis) => {
       let right = _.find(option.series, (item) => {
         return item.id === yAxis;
@@ -98,11 +99,11 @@ export class EchartsService {
     });
   }
 
-  setColor(option, colors: Array<string>) {
+  setColor(option: any, colors: Array<string>): any {
     option.color = colors;
   }
 
-  setLegend(option, legendOptions) {
+  setLegend(option: any, legendOptions: object): any {
     option.legend = legendOptions;
 
     option.legend.data = [];

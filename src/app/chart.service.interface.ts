@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
 
 export interface ChartService {
 
@@ -10,9 +10,9 @@ export interface ChartService {
 
     setSeries(chartData: object, tts: object, option: any, seriesOptions: Array<object>): any;
 
-    setXAxisData(chartData: object, tts: object, option: any, xAxis: string): any;
+    setXAxisData(chartData: object, option: any, xAxis: string): any;
 
-    setYAxis(chartData: object, tts: object, option: any): any;
+    setYAxis(tts: object, option: any): any;
 
     setyAxisIndex(option: any, yAxisIndex: Array<string>): any;
 

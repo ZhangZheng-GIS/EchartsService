@@ -25,15 +25,13 @@ export class HchartsComponent implements OnInit {
           { did: '企业数量', type: 'line' }]);
 
 
-        this.hchartsService.setXAxisData(chartData, tts, option, '板块名称');
-        this.hchartsService.setYAxis(chartData, tts, option);
+        this.hchartsService.setXAxisData(chartData, option, '板块名称');
+        this.hchartsService.setYAxis(tts, option);
         this.hchartsService.setyAxisIndex(option, ['企业数量']);
         this.hchartsService.setTitle(option, { text: 'aaaaaaa', align: 'center' });
         this.hchartsService.setLegend(option, { verticalAlign: 'top', y: 20 });
         this.hchartsService.setColor(option, ['#00ff4c', '#0011ff']);
         this.options = option;
-        // console.log(this.options);
-
       }
     });
 

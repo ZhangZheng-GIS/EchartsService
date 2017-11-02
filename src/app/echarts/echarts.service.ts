@@ -12,8 +12,8 @@ export class EchartsService implements ChartService {
     let item = _.find(tts, (o) => o.did === did);
     return item.tcd;
   }
-  getUnits(tts: object, tcd: any): any {
-    let item = _.find(tts, (o) => o.tcd === tcd);
+  getUnits(tts: object, did: any): any {
+    let item = _.find(tts, (o) => o.did === did);
     return item.du;
   }
 
@@ -55,18 +55,18 @@ export class EchartsService implements ChartService {
     option.title = titleOptions;
   }
 
-  setXAxisData(data: object, tts: object, option: any, xid: string): any {
+  setXAxisData(data: object,  option: any, xid: string): any {
     option.xAxis.data = data[xid];
   }
 
-  setYAxis(data: object, tts: object, option: any): any {
+  setYAxis(tts: object, option: any): any {
     _.forEach(option.series, (serie) => {
       let item = {
         type: 'value',
         name: null
       };
       item.name = serie.name;
-      let uni = this.getUnits(tts, serie.name);
+      let uni = this.getUnits(tts, serie.id);
       if (uni !== '') {
         item.name += '(' + uni + ')';
       }
@@ -90,7 +90,7 @@ export class EchartsService implements ChartService {
     });
   }
 
-  setyAxisIndex(option: any, yAxisArray: object): any {
+  setyAxisIndex(option: any, yAxisArray: Array<string>): any {
     _.forEach(yAxisArray, (yAxis) => {
       let right = _.find(option.series, (item) => {
         return item.id === yAxis;

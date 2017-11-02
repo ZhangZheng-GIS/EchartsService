@@ -7,7 +7,7 @@ import { DataService } from '../data.service';
   styleUrls: ['./echarts.component.css']
 })
 export class EchartsComponent implements OnInit {
-  option: any;
+  options: any;
 
   constructor(
     private dataService: DataService,
@@ -28,15 +28,13 @@ export class EchartsComponent implements OnInit {
         this.echartsService.setSeries(chartData, tts, option,
           [{ did: '占地面积', type: 'bar' },
           { did: '企业数量', type: 'line' }]);
-        this.echartsService.setXAxisData(chartData, tts, option, '板块名称');
-        this.echartsService.setYAxis(chartData, tts, option);
+        this.echartsService.setXAxisData(chartData, option, '板块名称');
+        this.echartsService.setYAxis(tts, option);
         this.echartsService.setyAxisIndex(option, ['企业数量']);
         this.echartsService.setTitle(option, { text: 'aaaaaaa', left: 'center' });
         this.echartsService.setLegend(option, { left: 'center', top: 20 });
         this.echartsService.setColor(option, ['#00ff4c', '#0011ff']);
-
-        this.option = option;
-
+        this.options = option;
       }
     });
   }

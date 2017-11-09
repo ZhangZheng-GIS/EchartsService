@@ -9,15 +9,15 @@ export class HchartsService implements ChartService {
 
   constructor() { }
 
-  getTcdByDid(tts: object, did: any): any {
+  getTcdByDid(tts: object, did: any): object {
     let item = _.find(tts, (o) => o.did === did);
     return item.tcd;
   }
-  getUnits(tts: object, did: any): any {
+  getUnits(tts: object, did: any): string {
     let item = _.find(tts, (o) => o.did === did);
     return item.du;
   }
-  toNumber(n: any): any {
+  toNumber(n: any): number {
     return _.toNumber(n);
   }
   /**
@@ -27,7 +27,7 @@ export class HchartsService implements ChartService {
    *
    * @return {object} 解析数据
    */
-  resolveDataSet(data: any): any {
+  resolveDataSet(data: any): object {
     let dataSet = new Object();
 
     _.forEach(data.Data.tdc, (tdc: any) => {
@@ -47,7 +47,7 @@ export class HchartsService implements ChartService {
    *
    * @return {object} 元数据
    */
-  getMetaInfo(data: any): any {
+  getMetaInfo(data: any): object {
     return data.Data.tts;
   }
   /**
@@ -55,7 +55,7 @@ export class HchartsService implements ChartService {
    *
    * @return {object} 初始配置项
    */
-  initOption(): any {
+  initOption(): object {
     return {
       title: {
       },
@@ -73,7 +73,7 @@ export class HchartsService implements ChartService {
    * @param {any}option 配置项
    * @param {object}titleOptions 标题配置对象
    */
-  setTitle(option: any, titleOptions: object): any {
+  setTitle(option: any, titleOptions: object): void {
     option.title = titleOptions;
   }
   /**
@@ -83,7 +83,7 @@ export class HchartsService implements ChartService {
    * @param {any}option 配置项
    * @param {string}xid X轴显示的数据项
    */
-  setXAxisData(data: object, option: any, xid: string): any {
+  setXAxisData(data: object, option: any, xid: string): void {
     option.xAxis.categories = data[xid];
   }
   /**
@@ -92,7 +92,7 @@ export class HchartsService implements ChartService {
    * @param {object}tts 元数据
    * @param {any}option 配置项
    */
-  setYAxis(tts: object, option: any): any {
+  setYAxis(tts: object, option: any): void {
     _.forEach(option.series, (serie: any) => {
       let item: any = {
         title: {
@@ -107,7 +107,6 @@ export class HchartsService implements ChartService {
       }
       option.yAxis.push(item);
     });
-    return option;
   }
   /**
    * 配置数据列
@@ -117,7 +116,7 @@ export class HchartsService implements ChartService {
    * @param {any}option 配置项
    * @param {Array<object>}series 数据列
    */
-  setSeries(data: object, tts: object, option: any, series: Array<object>): any {
+  setSeries(data: object, tts: object, option: any, series: Array<object>): void {
     _.forEach(series, (serie: any) => {
       if (_.has(data, serie.did)) {
         let item: any = new Object();
@@ -137,7 +136,7 @@ export class HchartsService implements ChartService {
    * @param {any}option 配置项
    * @param {Array<string>}yAxisArray Y轴在右侧数据名称数组
    */
-  setyAxisIndex(option: any, yAxisArray: Array<string>): any {
+  setyAxisIndex(option: any, yAxisArray: Array<string>): void {
     let No = 1;
     _.forEach(yAxisArray, (yAxis: any) => {
       let rightSerie = _.find(option.series, (item: any) => {
@@ -157,7 +156,7 @@ export class HchartsService implements ChartService {
    * @param {any}option 配置项
    * @param {object}legendOptions 图例配置对象
    */
-  setLegend(option: any, legendOptions: object): any {
+  setLegend(option: any, legendOptions: object): void {
     option.legend = legendOptions;
   }
   /**
@@ -165,7 +164,7 @@ export class HchartsService implements ChartService {
    * @param {any}option 配置项
    * @param {Array<string>}colors 颜色数组
    */
-  setColor(option: any, colors: Array<string>): any {
+  setColor(option: any, colors: Array<string>): void {
     option.colors = colors;
   }
 
